@@ -11,8 +11,8 @@
 
   <title>SIMETRI | Sistem Inventaris Terpadu</title>
 
-  <link rel="icon" type="image/png" href="https://ik.imagekit.io/logojkdiy/SIMETRI%20(2).png" />
-  <link rel="apple-touch-icon" href="https://ik.imagekit.io/logojkdiy/SIMETRI%20(2).png" />
+  png" />
+  png" />
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
@@ -37,14 +37,9 @@
       --sidebar: 260px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html,
-    body {
-      min-height: 100%;
-    }
+    html, body { min-height: 100%; }
 
     body {
       margin: 0;
@@ -53,24 +48,13 @@
       color: var(--text);
     }
 
-    body.modal-open {
-      overflow: hidden;
-    }
+    body.modal-open { overflow: hidden; }
 
-    button,
-    input,
-    select,
-    textarea {
-      font-family: inherit;
-    }
+    button, input, select, textarea { font-family: inherit; }
 
-    button {
-      cursor: pointer;
-    }
+    button { cursor: pointer; }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     svg {
       width: 20px;
@@ -97,9 +81,7 @@
       white-space: nowrap;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-    }
+    .btn:hover { transform: translateY(-1px); }
 
     .btn-primary {
       background: var(--maroon);
@@ -133,72 +115,91 @@
       color: var(--danger);
     }
 
-    .btn-block {
-      width: 100%;
-    }
+    .btn-block { width: 100%; }
 
-    .global-loader {
+    .loader-overlay {
       position: fixed;
       inset: 0;
       z-index: 10000;
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(14px);
       opacity: 0;
       pointer-events: none;
       transition: 0.2s ease;
     }
 
-    .global-loader.show {
+    .loader-overlay.show {
       opacity: 1;
       pointer-events: auto;
     }
 
     .loader-card {
-      width: min(340px, 90%);
-      padding: 28px;
-      border-radius: 30px;
+      width: min(360px, 90%);
       background: white;
       border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 28px;
       box-shadow: var(--shadow-strong);
       text-align: center;
     }
 
-    .loader-logo {
-      width: 88px;
-      height: 88px;
+    .loader-ring {
+      --pct: 0;
+      width: 112px;
+      height: 112px;
       margin: 0 auto 16px;
-      border-radius: 28px;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--maroon) calc(var(--pct) * 1%), #f2d8de 0);
+      display: grid;
+      place-items: center;
+      position: relative;
+      transition: background 0.25s ease;
+    }
+
+    .loader-ring::before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .loader-logo {
+      width: 66px;
+      height: 66px;
+      border-radius: 20px;
       background: var(--maroon-soft);
       display: grid;
       place-items: center;
       position: relative;
-    }
-
-    .loader-logo::before {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: 36px;
-      border: 4px solid #f5d6dc;
-      border-top-color: var(--maroon);
-      animation: spin 0.82s linear infinite;
+      z-index: 1;
+      overflow: hidden;
     }
 
     .loader-logo img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 12px;
-      position: relative;
-      z-index: 1;
+      padding: 9px;
+    }
+
+    .loader-percent {
+      margin-top: -8px;
+      margin-bottom: 8px;
+      color: var(--maroon);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
     }
 
     .loader-title {
-      font-size: 16px;
       font-weight: 600;
       color: var(--maroon);
+      font-size: 16px;
     }
 
     .loader-subtitle {
@@ -208,10 +209,21 @@
       line-height: 1.5;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    .loader-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #eeeeee;
+      overflow: hidden;
+      margin-top: 18px;
+    }
+
+    .loader-bar span {
+      height: 100%;
+      width: 0%;
+      display: block;
+      border-radius: inherit;
+      background: var(--maroon);
+      transition: width 0.25s ease;
     }
 
     .page-fade {
@@ -219,14 +231,8 @@
     }
 
     @keyframes pageFade {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
     }
 
     .logo-box {
@@ -317,19 +323,13 @@
       height: 100%;
       background: var(--maroon);
       border-radius: inherit;
-      animation: loading 1.2s infinite ease-in-out;
+      animation: miniLoading 1.2s infinite ease-in-out;
     }
 
-    @keyframes loading {
-      0% {
-        transform: translateX(-120%);
-      }
-      50% {
-        transform: translateX(90%);
-      }
-      100% {
-        transform: translateX(260%);
-      }
+    @keyframes miniLoading {
+      0% { transform: translateX(-120%); }
+      50% { transform: translateX(90%); }
+      100% { transform: translateX(260%); }
     }
 
     .login-page {
@@ -371,7 +371,7 @@
       width: 380px;
       height: 380px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.08);
     }
 
     .hero-brand {
@@ -411,7 +411,7 @@
     .hero-copy p {
       max-width: 620px;
       margin: 18px 0 0;
-      color: rgba(255, 255, 255, 0.76);
+      color: rgba(255,255,255,0.76);
       line-height: 1.8;
       font-size: 14px;
     }
@@ -427,8 +427,8 @@
     .hero-stat {
       padding: 16px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.13);
     }
 
     .hero-stat b {
@@ -644,7 +644,7 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background: rgba(250, 250, 250, 0.88);
+      background: rgba(250,250,250,0.88);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--line);
       display: flex;
@@ -733,7 +733,14 @@
       letter-spacing: 0.12em;
     }
 
+    .mobile-search-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .mobile-search {
+      flex: 1;
       height: 42px;
       border-radius: 999px;
       background: white;
@@ -743,7 +750,6 @@
       gap: 8px;
       padding: 0 14px;
       font-size: 12px;
-      flex: 1;
     }
 
     .mobile-avatar {
@@ -786,6 +792,49 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
+    }
+
+    .service-card h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 10px;
+    }
+
+    .service-btn {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      text-align: center;
+    }
+
+    .service-icon {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 8px;
+      border-radius: 18px;
+      background: var(--maroon-soft);
+      color: var(--maroon);
+      display: grid;
+      place-items: center;
+      transition: 0.18s ease;
+    }
+
+    .service-btn:hover .service-icon {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .service-btn span {
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.35;
+      display: block;
     }
 
     .section-head {
@@ -946,12 +995,12 @@
 
     .camera-panel.success-border {
       border-color: var(--success);
-      box-shadow: 0 0 0 6px rgba(21, 128, 61, 0.08);
+      box-shadow: 0 0 0 6px rgba(21,128,61,0.08);
     }
 
     .camera-panel.warning-border {
       border-color: var(--warning);
-      box-shadow: 0 0 0 6px rgba(180, 83, 9, 0.08);
+      box-shadow: 0 0 0 6px rgba(180,83,9,0.08);
     }
 
     .scan-frame {
@@ -961,7 +1010,7 @@
       border-radius: 26px;
       position: absolute;
       z-index: 2;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.08);
       pointer-events: none;
     }
 
@@ -978,12 +1027,8 @@
     }
 
     @keyframes scanLine {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(145px);
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(145px); }
     }
 
     .scan-caption {
@@ -996,7 +1041,7 @@
       text-align: center;
       font-size: 13px;
       line-height: 1.6;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255,255,255,0.88);
       border-radius: 16px;
       padding: 10px;
     }
@@ -1063,6 +1108,10 @@
       background: #fafafa;
       font-weight: 500;
       color: var(--muted);
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
     }
 
     .profile-shell {
@@ -1231,7 +1280,7 @@
       display: grid;
       place-items: center;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.42);
+      background: rgba(0,0,0,0.42);
       backdrop-filter: blur(8px);
       overflow-y: auto;
     }
@@ -1302,44 +1351,18 @@
     }
 
     @media (max-width: 1180px) {
-      .grid-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .scan-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .login-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .login-hero {
-        min-height: 440px;
-      }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .scan-layout { grid-template-columns: 1fr; }
+      .login-wrap { grid-template-columns: 1fr; }
+      .login-hero { min-height: 440px; }
     }
 
     @media (max-width: 980px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        margin-left: 0;
-        width: 100%;
-      }
-
-      .topbar {
-        display: none;
-      }
-
-      .content {
-        padding: 0 14px 108px;
-      }
+      .sidebar { display: none; }
+      .main { margin-left: 0; width: 100%; }
+      .topbar { display: none; }
+      .content { padding: 0 14px 108px; }
 
       .mobile-header {
         display: block;
@@ -1359,7 +1382,7 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 6px;
-        background: rgba(255, 255, 255, 0.96);
+        background: rgba(255,255,255,0.96);
         border: 1px solid var(--line);
         border-radius: 22px;
         box-shadow: var(--shadow-strong);
@@ -1406,24 +1429,18 @@
         align-items: start;
       }
 
-      .login-wrap {
-        display: block;
-      }
-
-      .login-hero {
-        display: none;
-      }
-
-      .login-card {
-        margin-top: 32px;
-        padding: 26px;
-        border-radius: 30px;
-      }
+      .login-wrap { display: block; }
+      .login-hero { display: none; }
+      .login-card { margin-top: 32px; padding: 26px; border-radius: 30px; }
 
       .grid-2,
       .grid-3,
       .grid-4 {
         grid-template-columns: 1fr;
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(4, 1fr);
       }
 
       .card {
@@ -1496,9 +1513,7 @@
     }
 
     @media print {
-      body {
-        background: white;
-      }
+      body { background: white; }
 
       .sidebar,
       .topbar,
@@ -1508,7 +1523,7 @@
       .btn,
       .toast-root,
       .mobile-header,
-      .global-loader {
+      .loader-overlay {
         display: none !important;
       }
 
@@ -1517,9 +1532,7 @@
         width: 100%;
       }
 
-      .content {
-        padding: 0;
-      }
+      .content { padding: 0; }
 
       .dbr-preview {
         width: 100%;
@@ -1534,13 +1547,17 @@
 </head>
 
 <body>
-  <div id="globalLoader" class="global-loader">
+  <div id="loaderOverlay" class="loader-overlay">
     <div class="loader-card">
-      <div class="loader-logo">
-        <img src="https://ik.imagekit.io/logojkdiy/SIMETRI%20(2).png" alt="SIMETRI" />
+      <div id="loaderRing" class="loader-ring">
+        <div class="loader-logo">
+          png" alt="SIMETRI" />
+        </div>
       </div>
+      <div id="loaderPercent" class="loader-percent">0%</div>
       <div id="loaderTitle" class="loader-title">Memuat SIMETRI</div>
       <div id="loaderSubtitle" class="loader-subtitle">Mohon tunggu sebentar...</div>
+      <div class="loader-bar"><span id="loaderBar"></span></div>
     </div>
   </div>
 
@@ -1563,22 +1580,22 @@
           <div class="logo-box large" id="loginLogo">S</div>
           <div>
             <strong>SIMETRI</strong>
-            <span>OJK DIY - ASET KONTROL </span>
+            <span>OJK DIY Asset Control</span>
           </div>
         </div>
 
         <div class="hero-copy">
-          <h2>Sistem Inspeksi, Manajemen & Evaluasi Terpadu Rekam Inventaris.</h2>
+          <h2>Asset checking system yang bersih, cepat, dan terukur.</h2>
           <p>
-            Pengecekan aset berbasis kamera smartphone, progress ruangan, pengajuan aset bermasalah,
+            Pengecekan aset berbasis kamera HP, progress ruangan, pengajuan aset bermasalah,
             monitoring live, laporan, export data, dan cetak DBR.
           </p>
         </div>
 
         <div class="hero-stats">
-          <div class="hero-stat"><b>Snapscan</b><span>Snapscan Kamera Mobile QR & Barcode</span></div>
-          <div class="hero-stat"><b>Live Report</b><span>Monitoring Progres Cek Aset</span></div>
-          <div class="hero-stat"><b>DBR Otomasi</b><span>DBR PDF dan Cetak</span></div>
+          <div class="hero-stat"><b>QR</b><span>Scan kamera</span></div>
+          <div class="hero-stat"><b>Live</b><span>Monitoring</span></div>
+          <div class="hero-stat"><b>A4</b><span>DBR PDF</span></div>
         </div>
       </div>
 
@@ -1608,7 +1625,7 @@
         </div>
 
         <div id="realModeLoginBox" class="real-mode-note hidden">
-          Dikelola Oleh LMSt - OJK Daerah Istimewa Yogyakarta.
+          Mode real data aktif. Akun demo otomatis disembunyikan.
         </div>
 
         <div id="installCard" class="install-card">
@@ -1664,7 +1681,7 @@
   <script>
     const CONFIG = {
       DATA_MODE: "real",
-      API_BASE_URL: "https://script.google.com/macros/s/AKfycbzCyUTIX953zDk610Q4mDL9NJxz2t7djbPX5T6D-bXch8gykObJv7PJLWO09TDU1YHt/exec",
+      API_BASE_URL: "https://script.google.com/macros/s/AKfycbwKiK2WHSrhGmFopUtjewRfLCcqF-iQMHxcoJ1k8zZcgBfbO09gjkMXx4t1erFvJRLV/exec",
       LIVE_INTERVAL_MS: 10000
     };
 
@@ -1743,14 +1760,20 @@
       page: "dashboard",
       activeRoom: "",
       scans: [],
-      issues: []
+      issues: [],
+      dashboard: {
+        totalAset: 0,
+        totalRuangan: 0,
+        totalScan: 0,
+        totalPengajuan: 0
+      }
     };
 
+    let assetsByRoom = {};
     let deferredInstallPrompt = null;
     let scannerStream = null;
     let scannerTimer = null;
     let liveTimer = null;
-    let loaderCount = 0;
     let liveHash = "";
     let scanInFlight = new Set();
     let tempProfilePhoto = "";
@@ -1773,26 +1796,48 @@
       if (card) card.classList.add("show");
     });
 
-    function showLoading(title, subtitle) {
-      loaderCount++;
-      document.getElementById("loaderTitle").textContent = title || "Memproses...";
-      document.getElementById("loaderSubtitle").textContent = subtitle || "Mohon tunggu sebentar...";
-      document.getElementById("globalLoader").classList.add("show");
+    function setLoaderProgress(percent, title, subtitle) {
+      const safePercent = Math.max(0, Math.min(100, Math.round(percent || 0)));
+
+      const overlay = document.getElementById("loaderOverlay");
+      const ring = document.getElementById("loaderRing");
+      const percentEl = document.getElementById("loaderPercent");
+      const titleEl = document.getElementById("loaderTitle");
+      const subtitleEl = document.getElementById("loaderSubtitle");
+      const bar = document.getElementById("loaderBar");
+
+      overlay.classList.add("show");
+      ring.style.setProperty("--pct", safePercent);
+      percentEl.textContent = safePercent + "%";
+      bar.style.width = safePercent + "%";
+      titleEl.textContent = title || "Memuat SIMETRI";
+      subtitleEl.textContent = subtitle || "Mohon tunggu sebentar...";
     }
 
-    function hideLoading() {
-      loaderCount = Math.max(0, loaderCount - 1);
-      if (loaderCount === 0) {
-        document.getElementById("globalLoader").classList.remove("show");
-      }
+    function hideLoader() {
+      document.getElementById("loaderOverlay").classList.remove("show");
     }
 
-    async function withLoading(title, subtitle, task) {
-      showLoading(title, subtitle);
+    async function loaderStep(percent, title, subtitle, minDelay) {
+      setLoaderProgress(percent, title, subtitle);
+      await delay(minDelay || 120);
+    }
+
+    function delay(ms) {
+      return new Promise(function (resolve) {
+        setTimeout(resolve, ms);
+      });
+    }
+
+    async function withLoader(title, subtitle, task) {
+      setLoaderProgress(15, title || "Memproses...", subtitle || "Mohon tunggu sebentar...");
       try {
-        return await task();
+        const result = await task();
+        setLoaderProgress(100, "Selesai", "Proses berhasil.");
+        await delay(180);
+        return result;
       } finally {
-        hideLoading();
+        hideLoader();
       }
     }
 
@@ -1848,42 +1893,33 @@
       document.getElementById("sidebarLogo").innerHTML = logoImage(SIMETRI_LOGO, "S", "Logo SIMETRI");
     }
 
-    async function apiRequest(action, data, useLoader, loaderTitle) {
+    async function apiRequest(action, data) {
       data = data || {};
-      useLoader = useLoader !== false;
 
-      async function run() {
-        const payload = {
-          action: action,
-          data: data
-        };
+      const payload = {
+        action: action,
+        data: data
+      };
 
-        if (state.user && state.user.email) {
-          payload.email = state.user.email;
-          payload.userEmail = state.user.email;
-          payload.data.userEmail = state.user.email;
-        }
-
-        const response = await fetch(CONFIG.API_BASE_URL, {
-          method: "POST",
-          body: JSON.stringify(payload),
-          redirect: "follow"
-        });
-
-        const json = await response.json();
-
-        if (!json.success) {
-          throw new Error(json.message || "Request backend gagal.");
-        }
-
-        return json.data;
+      if (state.user && state.user.email) {
+        payload.email = state.user.email;
+        payload.userEmail = state.user.email;
+        payload.data.userEmail = state.user.email;
       }
 
-      if (!useLoader) {
-        return run();
+      const response = await fetch(CONFIG.API_BASE_URL, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        redirect: "follow"
+      });
+
+      const json = await response.json();
+
+      if (!json.success) {
+        throw new Error(json.message || "Request backend gagal.");
       }
 
-      return withLoading(loaderTitle || "Menghubungkan backend...", "SIMETRI sedang memproses data terbaru.", run);
+      return json.data;
     }
 
     function mapUserBackend(user) {
@@ -1911,7 +1947,7 @@
         location: room.location || room["Lokasi"] || "",
         floor: room.floor || room["Lantai"] || "",
         status: room.status || room["Status"] || "Aktif",
-        totalAssets: room.totalAssets || room["Jumlah Aset"] || 0
+        totalAssets: Number(room.totalAssets || room["Jumlah Aset"] || 0)
       };
     }
 
@@ -1981,82 +2017,6 @@
       };
     }
 
-    async function loadInitialData() {
-      return withLoading("Menyiapkan dashboard...", "Mengambil ruangan, aset, scan, pengajuan, dan penandatangan terbaru.", async function () {
-        const data = await apiRequest("ambilDataAwal", {}, false);
-
-        state.user = mapUserBackend(data.user || data.pengguna || state.user);
-        rooms = (data.rooms || data.ruangan || []).map(mapRoomBackend);
-        assets = (data.assets || data.aset || []).map(mapAssetBackend);
-        state.scans = (data.scans || []).map(mapScanBackend);
-        state.issues = (data.issues || []).map(mapIssueBackend);
-        signatories = (data.signatories || data.penandatangan || []).map(mapSignatoryBackend);
-
-        if (!state.activeRoom && rooms[0]) {
-          state.activeRoom = rooms[0].code;
-        }
-
-        try {
-          const userRows = await apiRequest("ambilPengguna", {}, false);
-          users = (userRows || []).map(mapUserBackend);
-        } catch (error) {
-          users = [state.user];
-        }
-      });
-    }
-
-    async function refreshLiveData(silent) {
-      if (!state.user) return;
-
-      try {
-        const results = await Promise.all([
-          apiRequest("ambilScan", {}, false),
-          apiRequest("ambilPengajuan", {}, false)
-        ]);
-
-        const newScans = (results[0] || []).map(mapScanBackend);
-        const newIssues = (results[1] || []).map(mapIssueBackend);
-
-        const newHash = JSON.stringify([
-          newScans.length,
-          newScans.slice(-5),
-          newIssues.length,
-          newIssues.slice(-5)
-        ]);
-
-        if (newHash !== liveHash) {
-          state.scans = newScans;
-          state.issues = newIssues;
-          liveHash = newHash;
-
-          if (["dashboard", "monitoring", "reports", "rooms", "scan", "issues"].includes(state.page)) {
-            renderCurrentPage(false);
-          }
-
-          if (!silent && ["dashboard", "monitoring"].includes(state.page)) {
-            toast("Live Update", "Data monitoring diperbarui otomatis.");
-          }
-        }
-      } catch (error) {
-        console.warn("Live sync gagal:", error);
-      }
-    }
-
-    function startLiveSync() {
-      if (liveTimer) clearInterval(liveTimer);
-
-      liveTimer = setInterval(function () {
-        refreshLiveData(true);
-      }, CONFIG.LIVE_INTERVAL_MS);
-    }
-
-    async function manualLiveRefresh() {
-      await withLoading("Memperbarui monitoring...", "Mengambil data scan dan pengajuan terbaru.", async function () {
-        await refreshLiveData(false);
-      });
-      toast("Refresh Selesai", "Data live monitoring diperbarui.");
-    }
-
     async function login(event) {
       event.preventDefault();
 
@@ -2064,12 +2024,15 @@
       const passwordValue = document.getElementById("password").value;
 
       try {
+        await loaderStep(10, "Memverifikasi akun...", "Menghubungkan ke backend SIMETRI.", 120);
+
         const loginData = await apiRequest("login", {
           email: emailValue,
           password: passwordValue
-        }, true, "Memverifikasi login...");
+        });
 
         if (!loginData || !loginData.authenticated) {
+          hideLoader();
           beep("bad");
           modal(svg.issue, "Login Gagal", "Email atau password tidak sesuai.", [
             { label: "Tutup", className: "btn-light" }
@@ -2079,6 +2042,8 @@
 
         state.user = mapUserBackend(loginData.user || loginData.pengguna);
 
+        await loaderStep(25, "Login berhasil...", "Menyiapkan akses role " + state.user.role + ".", 120);
+
         document.getElementById("loginPage").classList.add("hidden");
         document.getElementById("app").classList.remove("hidden");
 
@@ -2087,22 +2052,54 @@
         document.getElementById("avatarBtn").textContent = getInitial(state.user.name);
 
         renderNav();
-        route("dashboard");
-        toast("Login Berhasil", "Selamat datang, " + state.user.name + ".");
+        route("dashboard", false);
 
-        requestFullscreenMobile();
+        await loaderStep(40, "Memuat dashboard cepat...", "Mengambil ringkasan data utama.", 80);
+        const dashboard = await apiRequest("ambilDashboardCepat", {});
+        state.dashboard = dashboard || state.dashboard;
 
-        await loadInitialData();
+        await loaderStep(60, "Memuat ruangan...", "Mengambil daftar ruangan aktif.", 80);
+        const initial = await apiRequest("ambilDataAwalRingan", {});
+        hydrateInitialData(initial);
 
+        await loaderStep(75, "Memuat data live...", "Mengambil scan dan pengajuan terbaru.", 80);
+        await refreshLiveData(true);
+
+        await loaderStep(90, "Menyiapkan tampilan...", "Merapikan menu dan akses pengguna.", 80);
         renderNav();
-        route("dashboard");
+
+        await loaderStep(100, "Siap digunakan", "Selamat datang di SIMETRI.", 180);
+        hideLoader();
+
+        toast("Login Berhasil", "Selamat datang, " + state.user.name + ".");
+        requestFullscreenMobile();
+        route("dashboard", true);
         startLiveSync();
 
       } catch (error) {
+        hideLoader();
         beep("bad");
         modal(svg.issue, "Backend Error", error.message || "Gagal menghubungkan ke backend.", [
           { label: "Tutup", className: "btn-light" }
         ]);
+      }
+    }
+
+    function hydrateInitialData(data) {
+      data = data || {};
+
+      if (data.user || data.pengguna) {
+        state.user = mapUserBackend(data.user || data.pengguna);
+      }
+
+      state.dashboard = data.dashboard || state.dashboard;
+      rooms = (data.rooms || data.ruangan || []).map(mapRoomBackend);
+      state.scans = (data.scans || []).map(mapScanBackend);
+      state.issues = (data.issues || []).map(mapIssueBackend);
+      signatories = (data.signatories || data.penandatangan || []).map(mapSignatoryBackend);
+
+      if (!state.activeRoom && rooms[0]) {
+        state.activeRoom = rooms[0].code;
       }
     }
 
@@ -2190,7 +2187,7 @@
       }
     }
 
-    function route(page) {
+    function route(page, animate) {
       stopCamera();
 
       if (!canAccess(page)) {
@@ -2217,10 +2214,7 @@
       document.getElementById("pageTitle").textContent = titles[page][0];
       document.getElementById("pageSubtitle").textContent = titles[page][1];
 
-      showLoading("Membuka menu...", "Menyiapkan tampilan " + titles[page][0] + ".");
-      setTimeout(hideLoading, 220);
-
-      renderCurrentPage(true);
+      renderCurrentPage(animate !== false);
     }
 
     function mobileHeaderHTML() {
@@ -2230,12 +2224,68 @@
             '<span>SIMETRI</span>' +
             '<button class="btn btn-outline" onclick="logout()" style="min-height:34px;background:rgba(255,255,255,.16);color:white;border:0">Keluar</button>' +
           '</div>' +
-          '<div style="display:flex;gap:10px">' +
-            '<div class="mobile-search">' + svg.monitor + '<span>LMSt Apps</span></div>' +
+          '<div class="mobile-search-row">' +
+            '<div class="mobile-search">' + svg.monitor + '<span>Live sync maksimal 10 detik</span></div>' +
             '<button class="mobile-avatar" onclick="route(\'profile\')">' + getInitial(state.user.name) + '</button>' +
           '</div>' +
         '</div>'
       );
+    }
+
+    async function refreshLiveData(silent) {
+      if (!state.user) return;
+
+      try {
+        const results = await Promise.all([
+          apiRequest("ambilScanLive", { limit: 1000 }),
+          apiRequest("ambilPengajuan", {})
+        ]);
+
+        const newScans = (results[0] || []).map(mapScanBackend);
+        const newIssues = (results[1] || []).map(mapIssueBackend);
+
+        const newHash = JSON.stringify([
+          newScans.length,
+          newScans.slice(-5),
+          newIssues.length,
+          newIssues.slice(-5)
+        ]);
+
+        if (newHash !== liveHash) {
+          state.scans = newScans;
+          state.issues = newIssues;
+          liveHash = newHash;
+
+          state.dashboard.totalScan = newScans.length;
+          state.dashboard.totalPengajuan = newIssues.length;
+
+          if (["dashboard", "monitoring", "reports", "rooms", "scan", "issues"].includes(state.page)) {
+            renderCurrentPage(false);
+          }
+
+          if (!silent && ["dashboard", "monitoring"].includes(state.page)) {
+            toast("Live Update", "Data monitoring diperbarui otomatis.");
+          }
+        }
+      } catch (error) {
+        console.warn("Live sync gagal:", error);
+      }
+    }
+
+    function startLiveSync() {
+      if (liveTimer) clearInterval(liveTimer);
+
+      liveTimer = setInterval(function () {
+        refreshLiveData(true);
+      }, CONFIG.LIVE_INTERVAL_MS);
+    }
+
+    async function manualLiveRefresh() {
+      await withLoader("Memperbarui monitoring...", "Mengambil data scan dan pengajuan terbaru.", async function () {
+        await refreshLiveData(false);
+      });
+
+      toast("Refresh Selesai", "Data live monitoring diperbarui.");
     }
 
     function getRoom(code) {
@@ -2244,8 +2294,39 @@
       }) || rooms[0] || { code: "", name: "-", location: "-" };
     }
 
+    async function ensureAssetsForRoom(code) {
+      if (assetsByRoom[code]) {
+        return assetsByRoom[code];
+      }
+
+      const result = await withLoader("Memuat aset ruangan...", "Mengambil aset untuk ruangan " + code + ".", async function () {
+        return await apiRequest("ambilAsetRuangan", { kodeRuangan: code });
+      });
+
+      const list = (result.assets || result.data || result.aset || []).map(mapAssetBackend);
+      assetsByRoom[code] = list;
+
+      mergeAssetsCache(list);
+
+      return list;
+    }
+
+    function mergeAssetsCache(list) {
+      list.forEach(function (asset) {
+        const idx = assets.findIndex(function (item) {
+          return item.inv === asset.inv;
+        });
+
+        if (idx >= 0) {
+          assets[idx] = asset;
+        } else {
+          assets.push(asset);
+        }
+      });
+    }
+
     function getAssetsByRoom(code) {
-      return assets.filter(function (asset) {
+      return assetsByRoom[code] || assets.filter(function (asset) {
         return asset.room === code;
       });
     }
@@ -2257,11 +2338,14 @@
     }
 
     function getProgress(code) {
+      const room = getRoom(code);
       const list = getAssetsByRoom(code);
-      const done = list.filter(function (asset) {
-        return isScanned(asset.inv, code);
-      }).length;
-      const total = list.length;
+      const total = list.length || room.totalAssets || 0;
+
+      const done = list.length
+        ? list.filter(function (asset) { return isScanned(asset.inv, code); }).length
+        : state.scans.filter(function (scan) { return scan.room === code; }).length;
+
       const percent = total ? Math.round((done / total) * 100) : 0;
 
       return { done: done, total: total, percent: percent };
@@ -2287,24 +2371,81 @@
       );
     }
 
+    function getDashboardActionsByRole(role) {
+      if (role === "Petugas") {
+        return [
+          { id: "scan", label: "Scan Cepat", icon: "scan" },
+          { id: "issues", label: "Kendala", icon: "issue" },
+          { id: "rooms", label: "Ruangan", icon: "room" },
+          { id: "profile", label: "Profil", icon: "user" }
+        ];
+      }
+
+      if (role === "Supervisor") {
+        return [
+          { id: "monitoring", label: "Monitor", icon: "monitor" },
+          { id: "issues", label: "Validasi", icon: "issue" },
+          { id: "reports", label: "Laporan", icon: "report" },
+          { id: "dbr", label: "DBR", icon: "report" }
+        ];
+      }
+
+      return [
+        { id: "accounts", label: "Akun", icon: "user" },
+        { id: "rooms", label: "Ruangan", icon: "room" },
+        { id: "scan", label: "Scan", icon: "scan" },
+        { id: "monitoring", label: "Monitor", icon: "monitor" },
+        { id: "issues", label: "Pengajuan", icon: "issue" },
+        { id: "reports", label: "Laporan", icon: "report" },
+        { id: "dbr", label: "DBR", icon: "report" },
+        { id: "signatories", label: "TTD DBR", icon: "sign" },
+        { id: "settings", label: "Setting", icon: "settings" }
+      ];
+    }
+
+    function serviceGridHTML() {
+      const actions = getDashboardActionsByRole(state.user.role);
+
+      return (
+        '<div class="card service-card">' +
+          '<h3>Layanan SIMETRI</h3>' +
+          '<div class="service-grid">' +
+            actions.map(function (item) {
+              return (
+                '<button class="service-btn" onclick="route(\'' + item.id + '\')">' +
+                  '<div class="service-icon">' + svg[item.icon] + '</div>' +
+                  '<span>' + item.label + '</span>' +
+                '</button>'
+              );
+            }).join("") +
+          '</div>' +
+        '</div>'
+      );
+    }
+
     function dashboardView() {
-      const totalAssets = assets.length;
-      const scanned = state.scans.length;
-      const pct = Math.round((scanned / totalAssets) * 100) || 0;
+      const totalAssets = Number(state.dashboard.totalAset || assets.length || 0);
+      const totalRooms = Number(state.dashboard.totalRuangan || rooms.length || 0);
+      const scanned = Number(state.dashboard.totalScan || state.scans.length || 0);
+      const totalIssues = Number(state.dashboard.totalPengajuan || state.issues.length || 0);
+      const pct = totalAssets ? Math.round((scanned / totalAssets) * 100) : 0;
 
       return (
         mobileHeaderHTML() +
+
         '<div class="card" style="margin-bottom:18px">' +
-          '<b>Live Monitoring</b>' +
+          '<b>Progress Pengecekan Aset</b>' +
           '<p style="margin:6px 0 0;color:var(--muted);font-size:13px">Data scan dan pengajuan otomatis diperbarui maksimal setiap ' + (CONFIG.LIVE_INTERVAL_MS / 1000) + ' detik.</p>' +
           progressHTML(pct, scanned + " / " + totalAssets + " aset") +
         '</div>' +
 
-        '<div class="grid grid-4">' +
-          stat("dashboard", totalAssets, "Total Aset", "Data dari backend") +
-          stat("room", rooms.length, "Total Ruangan", "Ruangan pengecekan") +
+        serviceGridHTML() +
+
+        '<div class="grid grid-4" style="margin-top:18px">' +
+          stat("dashboard", totalAssets, "Total Aset", "Data dari backend cepat") +
+          stat("room", totalRooms, "Total Ruangan", "Ruangan pengecekan") +
           stat("scan", scanned, "Aset Dicek", pct + "% dari total aset") +
-          stat("issue", state.issues.length, "Pengajuan", "Butuh tindak lanjut") +
+          stat("issue", totalIssues, "Pengajuan", "Butuh tindak lanjut") +
         '</div>'
       );
     }
@@ -2348,8 +2489,9 @@
       });
     }
 
-    function startScan(code) {
+    async function startScan(code) {
       state.activeRoom = code;
+      await ensureAssetsForRoom(code);
       toast("Ruangan Dipilih", getRoom(code).name + " siap dilakukan pengecekan.");
       route("scan");
     }
@@ -2364,7 +2506,7 @@
         '<div class="scan-layout">' +
           '<div class="card">' +
             '<div class="section-head" style="margin-top:0">' +
-              '<div><h3>' + room.name + '</h3><p>Kode Ruangan: ' + room.code + ' • Total aset: ' + list.length + '</p></div>' +
+              '<div><h3>' + room.name + '</h3><p>Kode Ruangan: ' + room.code + ' • Total aset: ' + p.total + '</p></div>' +
               '<span class="status ' + (p.percent === 100 ? "status-success" : "status-maroon") + '">' + (p.percent === 100 ? "Selesai" : "Sedang Dicek") + '</span>' +
             '</div>' +
 
@@ -2422,14 +2564,16 @@
           return;
         }
 
-        showLoading("Meminta izin kamera...", "Browser akan meminta izin akses kamera.");
+        setLoaderProgress(20, "Meminta izin kamera...", "Browser akan meminta izin akses kamera.");
 
         scannerStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { ideal: "environment" } },
           audio: false
         });
 
-        hideLoading();
+        setLoaderProgress(100, "Kamera aktif", "Arahkan kamera ke barcode.");
+        await delay(250);
+        hideLoader();
 
         panel.innerHTML =
           '<video id="scanVideo" autoplay playsinline muted></video>' +
@@ -2459,7 +2603,7 @@
         }
 
       } catch (error) {
-        hideLoading();
+        hideLoader();
         modal(svg.issue, "Izin Kamera Gagal", error.message || "Kamera tidak dapat diakses. Pastikan menggunakan HTTPS/GitHub Pages.", [
           { label: "Tutup", className: "btn-light" }
         ]);
@@ -2481,16 +2625,28 @@
     }
 
     async function scanByCode(value) {
-      const asset = assets.find(function (item) {
-        return item.inv === value || item.nomorAset === value || item.inventoryBmn === value;
-      });
+      const loadedRooms = Object.keys(assetsByRoom);
+      let asset = null;
+
+      for (let i = 0; i < loadedRooms.length; i++) {
+        asset = assetsByRoom[loadedRooms[i]].find(function (item) {
+          return item.inv === value || item.nomorAset === value || item.inventoryBmn === value;
+        });
+
+        if (asset) break;
+      }
 
       if (!asset) {
-        toast("Aset Tidak Dikenal", "Kode hasil scan tidak ditemukan di database: " + value);
+        asset = assets.find(function (item) {
+          return item.inv === value || item.nomorAset === value || item.inventoryBmn === value;
+        });
+      }
+
+      if (!asset) {
+        toast("Aset Tidak Dikenal", "Kode hasil scan belum ada di cache. Gunakan Input Manual atau buka ruangan aset terlebih dahulu.");
         return;
       }
 
-      state.activeRoom = asset.room;
       await saveScanAsset(asset);
     }
 
@@ -2520,12 +2676,39 @@
       scanInFlight.add(lockKey);
 
       try {
-        const result = await apiRequest("simpanScan", {
-          kodeInventaris: asset.inv,
-          kodeRuangan: state.activeRoom || asset.room,
-          statusScan: "Sesuai",
-          catatan: ""
-        }, true, "Menyimpan hasil scan...");
+        const result = await withLoader("Menyimpan hasil scan...", "Memverifikasi barcode ke backend.", async function () {
+          return await apiRequest("simpanScan", {
+            kodeInventaris: asset.inv,
+            kodeRuangan: state.activeRoom || asset.room,
+            statusScan: "Sesuai",
+            catatan: ""
+          });
+        });
+
+        if (result && result.duplicate) {
+          const mappedDuplicate = result.scan ? mapScanBackend(result.scan) : null;
+
+          if (mappedDuplicate && !state.scans.some(function (scan) {
+            return scan.inv === mappedDuplicate.inv && scan.room === mappedDuplicate.room;
+          })) {
+            state.scans.push(mappedDuplicate);
+          }
+
+          beep("ok");
+          toast("Barcode Sudah Terverifikasi", "Aset ini sudah pernah discan sebelumnya.");
+
+          modal(svg.check, "Barcode Sudah Terverifikasi",
+            "Barcode ini sudah pernah dipindai dan sudah terverifikasi.<br><br><b>Kode Aset:</b><br>" + asset.inv + "<br><br><b>Nama Aset:</b><br>" + asset.name,
+            [
+              { label: "Lanjut Scan", className: "btn-success", action: function () { route("scan"); } },
+              { label: "Tutup", className: "btn-light" }
+            ]
+          );
+
+          liveHash = "";
+          route("scan");
+          return;
+        }
 
         const mapped = result && result.scan
           ? mapScanBackend(result.scan)
@@ -2545,6 +2728,7 @@
           state.scans.push(mapped);
         }
 
+        state.dashboard.totalScan = state.scans.length;
         liveHash = "";
 
         beep("ok");
@@ -2581,6 +2765,15 @@
 
     function simulateMismatch() {
       beep("bad");
+
+      const panel = document.getElementById("cameraPanel");
+      if (panel) {
+        panel.classList.add("warning-border");
+        setTimeout(function () {
+          panel.classList.remove("warning-border");
+        }, 700);
+      }
+
       modal(svg.issue, "Aset Tidak Sesuai Ruangan", "Aset ini tidak terdaftar pada ruangan yang sedang dicek.", [
         { label: "Ajukan Perpindahan", className: "btn-warning", action: function () { openIssue(state.activeRoom, "Perpindahan Aset"); } },
         { label: "Tutup", className: "btn-light" }
@@ -2596,14 +2789,20 @@
             className: "btn-primary",
             action: async function () {
               const value = document.getElementById("manualInv") ? document.getElementById("manualInv").value : "";
-              const asset = assets.find(function (item) {
+              let asset = assets.find(function (item) {
                 return item.inv === value || item.nomorAset === value || item.inventoryBmn === value;
               });
+
+              if (!asset) {
+                asset = getAssetsByRoom(state.activeRoom).find(function (item) {
+                  return item.inv === value || item.nomorAset === value || item.inventoryBmn === value;
+                });
+              }
 
               if (asset) {
                 await saveScanAsset(asset);
               } else {
-                modal(svg.issue, "Tidak Ditemukan", "Kode aset tidak ditemukan di database.", [
+                modal(svg.issue, "Tidak Ditemukan", "Kode aset tidak ditemukan di cache frontend. Pastikan ruangan sudah dibuka atau scan barcode sesuai database.", [
                   { label: "Tutup", className: "btn-light" }
                 ]);
               }
@@ -2721,16 +2920,20 @@
 
     async function submitIssue(code) {
       try {
-        const result = await apiRequest("kirimPengajuan", {
-          jenisPengajuan: document.getElementById("issueType").value,
-          kodeInventaris: document.getElementById("issueAsset").value,
-          kodeRuangan: code,
-          ruanganAktual: document.getElementById("issueRoom").value,
-          kondisiAktual: document.getElementById("issueCondition").value,
-          catatan: document.getElementById("issueNote").value
-        }, true, "Mengirim pengajuan...");
+        const result = await withLoader("Mengirim pengajuan...", "Menyimpan data pengajuan ke backend.", async function () {
+          return await apiRequest("kirimPengajuan", {
+            jenisPengajuan: document.getElementById("issueType").value,
+            kodeInventaris: document.getElementById("issueAsset").value,
+            kodeRuangan: code,
+            ruanganAktual: document.getElementById("issueRoom").value,
+            kondisiAktual: document.getElementById("issueCondition").value,
+            catatan: document.getElementById("issueNote").value
+          });
+        });
 
         state.issues.push(mapIssueBackend(result));
+        state.dashboard.totalPengajuan = state.issues.length;
+
         closeModal();
         toast("Pengajuan Terkirim", "Data pengajuan aset sudah tersimpan.");
         route("issues");
@@ -2784,10 +2987,12 @@
 
     async function validateIssue(id, status) {
       try {
-        const result = await apiRequest("validasiPengajuan", {
-          idPengajuan: id,
-          status: status
-        }, true, "Memperbarui pengajuan...");
+        const result = await withLoader("Memperbarui pengajuan...", "Menyimpan status validasi.", async function () {
+          return await apiRequest("validasiPengajuan", {
+            idPengajuan: id,
+            status: status
+          });
+        });
 
         const updated = mapIssueBackend(result);
 
@@ -2806,8 +3011,8 @@
     }
 
     function reportsView() {
-      const totalAssets = assets.length;
-      const scanned = state.scans.length;
+      const totalAssets = Number(state.dashboard.totalAset || assets.length || 0);
+      const scanned = Number(state.dashboard.totalScan || state.scans.length || 0);
       const completedRooms = rooms.filter(function (room) {
         return getProgress(room.code).percent === 100;
       }).length;
@@ -2901,18 +3106,20 @@
     }
 
     function exportPDF() {
-      showLoading("Menyiapkan PDF...", "Dialog cetak akan terbuka.");
+      setLoaderProgress(80, "Menyiapkan PDF...", "Dialog cetak akan terbuka.");
       setTimeout(function () {
-        hideLoading();
+        hideLoader();
         window.print();
       }, 400);
     }
 
     async function sendRoomCompleteEmail(roomCode) {
       try {
-        const result = await apiRequest("kirimEmailRuanganSelesai", {
-          kodeRuangan: roomCode
-        }, true, "Memproses email ruangan...");
+        const result = await withLoader("Memproses email ruangan...", "Backend sedang menyiapkan notifikasi email.", async function () {
+          return await apiRequest("kirimEmailRuanganSelesai", {
+            kodeRuangan: roomCode
+          });
+        });
 
         toast("Email Ruangan", "Email diproses: " + (result.status || "OK"));
       } catch (error) {
@@ -2924,7 +3131,10 @@
 
     async function sendSummaryEmail() {
       try {
-        const result = await apiRequest("kirimEmailRingkasan", {}, true, "Mengirim email ringkasan...");
+        const result = await withLoader("Mengirim email ringkasan...", "Backend sedang memproses laporan ringkasan.", async function () {
+          return await apiRequest("kirimEmailRingkasan", {});
+        });
+
         toast("Email Ringkasan", "Email diproses: " + (result.status || "OK"));
       } catch (error) {
         modal(svg.issue, "Email Gagal", error.message || "Email gagal diproses.", [
@@ -2998,15 +3208,17 @@
 
     async function saveAccountReal() {
       try {
-        const result = await apiRequest("simpanPengguna", {
-          nama: document.getElementById("accountName").value,
-          email: document.getElementById("accountEmail").value,
-          password: document.getElementById("accountPassword").value,
-          role: document.getElementById("accountRole").value,
-          nip: document.getElementById("accountNip").value,
-          jabatan: document.getElementById("accountJabatan").value,
-          status: "Aktif"
-        }, true, "Menyimpan akun...");
+        const result = await withLoader("Menyimpan akun...", "Backend sedang memperbarui pengguna.", async function () {
+          return await apiRequest("simpanPengguna", {
+            nama: document.getElementById("accountName").value,
+            email: document.getElementById("accountEmail").value,
+            password: document.getElementById("accountPassword").value,
+            role: document.getElementById("accountRole").value,
+            nip: document.getElementById("accountNip").value,
+            jabatan: document.getElementById("accountJabatan").value,
+            status: "Aktif"
+          });
+        });
 
         const mapped = mapUserBackend(result);
         const idx = users.findIndex(function (user) {
@@ -3042,7 +3254,10 @@
           label: "Ya, Hapus",
           className: "btn-danger",
           action: async function () {
-            await apiRequest("hapusPengguna", { email: email }, true, "Menghapus akun...");
+            await withLoader("Menghapus akun...", "Backend sedang menghapus pengguna.", async function () {
+              return await apiRequest("hapusPengguna", { email: email });
+            });
+
             users = users.filter(function (user) {
               return user.email !== email;
             });
@@ -3161,15 +3376,17 @@
 
     async function saveProfile() {
       try {
-        const result = await apiRequest("simpanProfil", {
-          nama: document.getElementById("profileName").value,
-          nip: document.getElementById("profileNip").value,
-          nomorHp: document.getElementById("profilePhone").value,
-          jabatan: document.getElementById("profileJabatan").value,
-          unitKerja: document.getElementById("profileUnit").value,
-          lokasiKantor: document.getElementById("profileOffice").value,
-          urlFoto: tempProfilePhoto || state.user.photo || ""
-        }, true, "Menyimpan profil...");
+        const result = await withLoader("Menyimpan profil...", "Backend sedang memperbarui profil.", async function () {
+          return await apiRequest("simpanProfil", {
+            nama: document.getElementById("profileName").value,
+            nip: document.getElementById("profileNip").value,
+            nomorHp: document.getElementById("profilePhone").value,
+            jabatan: document.getElementById("profileJabatan").value,
+            unitKerja: document.getElementById("profileUnit").value,
+            lokasiKantor: document.getElementById("profileOffice").value,
+            urlFoto: tempProfilePhoto || state.user.photo || ""
+          });
+        });
 
         state.user = mapUserBackend(result);
         document.getElementById("userName").textContent = state.user.name;
@@ -3226,10 +3443,12 @@
       }
 
       try {
-        await apiRequest("ubahKataSandi", {
-          kataSandiLama: oldPassword,
-          kataSandiBaru: newPassword
-        }, true, "Mengubah password...");
+        await withLoader("Mengubah password...", "Backend sedang memperbarui password.", async function () {
+          return await apiRequest("ubahKataSandi", {
+            kataSandiLama: oldPassword,
+            kataSandiBaru: newPassword
+          });
+        });
 
         closeModal();
         toast("Password Diperbarui", "Kata sandi berhasil diperbarui.");
@@ -3302,13 +3521,15 @@
 
     async function saveSignatory() {
       try {
-        const result = await apiRequest("simpanPenandatangan", {
-          jenis: document.getElementById("signJenis").value,
-          nama: document.getElementById("signNama").value,
-          nip: document.getElementById("signNip").value,
-          jabatan: document.getElementById("signJabatan").value,
-          status: "Aktif"
-        }, true, "Menyimpan penandatangan...");
+        const result = await withLoader("Menyimpan penandatangan...", "Backend sedang memperbarui data tanda tangan.", async function () {
+          return await apiRequest("simpanPenandatangan", {
+            jenis: document.getElementById("signJenis").value,
+            nama: document.getElementById("signNama").value,
+            nip: document.getElementById("signNip").value,
+            jabatan: document.getElementById("signJabatan").value,
+            status: "Aktif"
+          });
+        });
 
         const mapped = mapSignatoryBackend(result);
         const idx = signatories.findIndex(function (item) {
@@ -3331,8 +3552,9 @@
       }
     }
 
-    function openDBR(code) {
+    async function openDBR(code) {
       state.activeRoom = code;
+      await ensureAssetsForRoom(code);
       route("dbr");
     }
 
@@ -3411,7 +3633,7 @@
       return (
         mobileHeaderHTML() +
         '<div class="grid grid-2">' +
-          '<div class="card"><h3>Mode Data</h3><p style="color:var(--muted)">Real backend aktif dan terhubung ke Apps Script.</p></div>' +
+          '<div class="card"><h3>Mode Data</h3><p style="color:var(--muted)">Real backend aktif dan memakai endpoint cepat.</p></div>' +
           '<div class="card"><h3>Install App</h3><p style="color:var(--muted)">Upload file ini ke GitHub Pages agar dapat diinstall sebagai shortcut/PWA.</p><button class="btn btn-primary" onclick="installApp()">Install Aplikasi</button></div>' +
           '<div class="card"><h3>Kamera</h3><p style="color:var(--muted)">Kamera memerlukan HTTPS. GitHub Pages sudah mendukung HTTPS.</p></div>' +
           '<div class="card"><h3>Live Monitoring</h3><p style="color:var(--muted)">Data scan dan pengajuan diperbarui otomatis maksimal setiap ' + (CONFIG.LIVE_INTERVAL_MS / 1000) + ' detik.</p></div>' +
@@ -3472,7 +3694,7 @@
     }
 
     function showNotification() {
-      modal(svg.check, "Notifikasi SIMETRI", "Semua proses sudah memiliki loading screen, toast, dan live monitoring maksimal 10 detik.", [
+      modal(svg.check, "Notifikasi SIMETRI", "Frontend memakai endpoint cepat, loading persentase, lazy-load aset per ruangan, dan live monitoring maksimal 10 detik.", [
         { label: "Baik", className: "btn-primary" }
       ]);
     }
