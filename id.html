@@ -1736,7 +1736,7 @@
   <script>
     const CONFIG = {
       DATA_MODE: "real",
-      API_BASE_URL: "https://script.google.com/macros/s/AKfycbzG_Yq_LTRJ42PeqURcyCs3iBz0gYybd_kYkpZC4MepjNgST_tPkDLnxzU2Qx8JctcI/exec",
+      API_BASE_URL: "https://script.google.com/macros/s/AKfycbzuf6iKZRYx402rfi8Ijy3xc9Q5biEsSmGkrV6GokgI0vPaz7AoiRPF4e0cvxnw4rA/exec",
       LIVE_INTERVAL_MS: 10000,
       REAL_SCAN_ONLY: true
     };
@@ -1915,39 +1915,42 @@
     }
 
     function setupPWA() {
-      const manifest = {
-        name: "SIMETRI",
-        short_name: "SIMETRI",
-        start_url: ".",
-        display: "standalone",
-        background_color: "#ffffff",
-        theme_color: "#8a1022",
-        icons: [
-          { src: SIMETRI_FAVICON, sizes: "192x192", type: "image/png" },
-          { src: SIMETRI_FAVICON, sizes: "512x512", type: "image/png" }
-        ]
-      };
+  const currentPath = window.location.pathname;
+  const scopePath = currentPath.endsWith("/")
+    ? currentPath
+    : currentPath.substring(0, currentPath.lastIndexOf("/") + 1);
 
-      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-      const link = document.createElement("link");
-      link.rel = "manifest";
-      link.href = URL.createObjectURL(blob);
-      document.head.appendChild(link);
-    }
-
-    async function installApp() {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        await deferredInstallPrompt.userChoice;
-        deferredInstallPrompt = null;
-        return;
+  const manifest = {
+    name: "SIMETRI",
+    short_name: "SIMETRI",
+    start_url: window.location.origin + currentPath,
+    scope: window.location.origin + scopePath,
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#8a1022",
+    icons: [
+      {
+        src: SIMETRI_FAVICON,
+        sizes: "192x192",
+        type: "image/png"
+      },
+      {
+        src: SIMETRI_FAVICON,
+        sizes: "512x512",
+        type: "image/png"
       }
+    ]
+  };
 
-      modal(svg.check, "Install Shortcut", "Gunakan menu browser untuk menambahkan SIMETRI ke layar utama.", [
-        { label: "Baik", className: "btn-primary" }
-      ]);
-    }
+  const blob = new Blob([JSON.stringify(manifest)], {
+    type: "application/json"
+  });
 
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+}
     function applyDataMode() {
       const demoBox = document.getElementById("demoLoginBox");
       const realBox = document.getElementById("realModeLoginBox");
