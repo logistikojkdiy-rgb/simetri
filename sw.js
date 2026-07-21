@@ -1,8 +1,8 @@
-const CACHE_NAME = "simetri-v6-5-2-cache-v1";
+const CACHE_NAME = "index_simetri_v7_enterprise";
 
 const STATIC_ASSETS = [
   "./",
-  "./index.html",
+  "./id.html",
   "https://ik.imagekit.io/logojkdiy/SIMETRI.png",
   "https://ik.imagekit.io/logojkdiy/SIMETRI%20(2).png",
   "https://ik.imagekit.io/logojkdiy/ojk-indonesia-seeklogo.png?updatedAt=1754402028771"
